@@ -27,9 +27,8 @@ function loadFromLocalStorage() {
 function addItem() {
     const inputValue = inputField.value.trim();
     if (inputValue.length > 3 && inputValue.charAt(0) === inputValue.charAt(0).toUpperCase()) {
-        // Create a new object with id, name, createdDate, and completed keys
         const newItem = {
-            id: ++idCounter,  // Increment and use idCounter as unique ID
+            id: ++idCounter,  
             name: inputValue,
             createdDate: new Date().toISOString(),
             completed: false
@@ -37,11 +36,7 @@ function addItem() {
 
         // Add the new item to the list
         itemList.push(newItem);
-
-        // Save the updated itemList and idCounter to local storage
         saveToLocalStorage();
-
-        // Update the displayed items
         updateItemList();
 
         // Clear the input field
@@ -88,7 +83,6 @@ function updateItemList() {
         itemDiv.appendChild(itemNameSpan);
         itemDiv.appendChild(deleteButton);
 
-        // Append the item <div> to the itemListContainer
         itemListContainer.appendChild(itemDiv);
     });
 }
@@ -113,7 +107,6 @@ function sortItems() {
 addButton.addEventListener('click', addItem);
 sortButton.addEventListener('click', sortItems);
 
-// Optionally, add event listener for Enter key press to add item
 inputField.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         addItem();
