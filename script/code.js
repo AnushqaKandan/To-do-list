@@ -3,6 +3,25 @@ const sortButton = document.getElementById('sort');
 const inputField = document.getElementById('input');
 const itemListContainer = document.getElementById('item-list');
 let itemList = [];
+let idCounter = 0;  // Counter to keep track of item IDs
+
+// Function to save itemList to local storage
+function saveToLocalStorage() {
+    localStorage.setItem('itemList', JSON.stringify(itemList));
+    localStorage.setItem('idCounter', idCounter);
+}
+
+// Function to load itemList from local storage
+function loadFromLocalStorage() {
+    const savedItemList = localStorage.getItem('itemList');
+    const savedIdCounter = localStorage.getItem('idCounter');
+    if (savedItemList) {
+        itemList = JSON.parse(savedItemList);
+    }
+    if (savedIdCounter) {
+        idCounter = parseInt(savedIdCounter, 10);
+    }
+}
 
 // Function to add a new item to the list
 function addItem() {
@@ -10,7 +29,7 @@ function addItem() {
     if (inputValue.length > 3 && inputValue.charAt(0) === inputValue.charAt(0).toUpperCase()) {
         // Create a new object with id, name, createdDate, and completed keys
         const newItem = {
-            id: Date.now(),  
+            id: ++idCounter,  // Increment and use idCounter as unique ID
             name: inputValue,
             createdDate: new Date().toISOString(),
             completed: false
@@ -18,6 +37,9 @@ function addItem() {
 
         // Add the new item to the list
         itemList.push(newItem);
+
+        // Save the updated itemList and idCounter to local storage
+        saveToLocalStorage();
 
         // Update the displayed items
         updateItemList();
@@ -45,6 +67,7 @@ function updateItemList() {
         checkbox.checked = item.completed;
         checkbox.addEventListener('change', () => {
             item.completed = checkbox.checked;
+            saveToLocalStorage();
             updateItemList();
         });
 
@@ -56,7 +79,9 @@ function updateItemList() {
         const deleteButton = document.createElement('button');
         deleteButton.innerHTML = '&#10005;'; // Cross symbol (×)
         deleteButton.classList.add('delete-button'); // Add the delete button class
-        deleteButton.addEventListener('click', () => deleteItem(item.id));
+        deleteButton.addEventListener('click', () => {
+            deleteItem(item.id);
+        });
 
         // Add checkbox, item name, and delete button to the itemDiv
         itemDiv.appendChild(checkbox);
@@ -72,6 +97,7 @@ function updateItemList() {
 function deleteItem(itemId) {
     const index = itemList.findIndex(item => item.id === itemId);
     itemList.splice(index, 1);
+    saveToLocalStorage();
     updateItemList();
     console.log(itemList);
 }
@@ -79,6 +105,7 @@ function deleteItem(itemId) {
 // Function to sort items in alphabetical order
 function sortItems() {
     itemList.sort((a, b) => a.name.localeCompare(b.name));
+    saveToLocalStorage();
     updateItemList();
     console.log(itemList);
 }
@@ -91,4 +118,10 @@ inputField.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         addItem();
     }
+});
+
+// Load items from local storage when the page is loaded
+window.addEventListener('load', () => {
+    loadFromLocalStorage();
+    updateItemList();
 });
