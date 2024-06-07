@@ -6,31 +6,131 @@
     box-sizing: border-box;
 }
 
-.container{
-    width:fit-content;
+.container {
+    width: fit-content;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-left: 30rem;
+    margin: auto; /* Center the container on the screen */
     background-color: chocolate;
 }
-h1{
+
+h1 {
     color: white;
     font-size: 3rem;
+    text-align: center;
 }
 
 :is(#sort, #add, #input) {
-   height: 40px;
-   border-radius: 5px;
+    height: 40px;
+    border-radius: 5px;
 }
+
 :is(#sort, #add) {
     font-size: 25px;
+    margin: 5px; /* Add margin for spacing */
 }
 
-#input{
+#input {
     width: 20rem;
     font-size: 20px;
+    margin: 5px; /* Add margin for spacing */
 }
 
+.item-container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 10px; 
+    height: auto;  /* Allow height to be auto to accommodate varying text lengths */
+    width: 100%;  /* Use 100% to take full width */
+    background-color: #f0f0f0; 
+    padding: 10px; 
+    border-radius: 5px; 
+    margin-top: 1rem;
+}
+
+.delete-button {
+    background-color: #f44336; 
+    color: black; 
+    padding: 2px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkbox {
+    margin-left: 1rem; /* Adjust margin if needed */
+}
+
+.item-container span {
+    flex: 1;  /* Allow span to take remaining space */
+    overflow-wrap: break-word;  /* Break long words if needed */
+}
+
+.item-container input[type="checkbox"]:checked + span {
+    text-decoration: line-through;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    :is(#sort, #add, #input) {
+        width: 95%;
+        font-size: 20px;
+        height: 35px;
+    }
+
+    #input {
+        width: calc(100% - 20px); /* Full width minus padding */
+        font-size: 18px;
+    }
+
+    .item-container {
+        flex-direction: row;
+        gap: 15px;
+        font-size: 2rem;
+    }
+
+    .delete-button {
+        margin-left: 0;
+        align-self: flex-end;
+    }
+
+    .checkbox {
+        margin-left: 0;
+    }
+
+    .item-container span {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    :is(#sort, #add, #input) {
+        font-size: 18px;
+        height: 30px;
+    }
+
+    #input {
+        font-size: 16px;
+    }
+
+    .item-container {
+        font-size: 1.2rem;
+    }
+}
